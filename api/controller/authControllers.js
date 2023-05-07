@@ -98,7 +98,8 @@ const getLoggedInUser = async (req,res) => {
         if(!req.headers.cookie) {
             throw new Error("Not Logged in")
         }
-        jwt.verify(req.headers.cookie.split("=")[1], process.env.JWT_SECRET, function(err, decodedToken) {
+        let cookieJWT = req.headers.cookie.split(";")[3].split("=")[1]
+        jwt.verify(cookieJWT, process.env.JWT_SECRET, function(err, decodedToken) {
             if(err) { throw new Error("Couldn't get user data") }
             else {
                 res.status(200).json(decodedToken)  // Add to req object

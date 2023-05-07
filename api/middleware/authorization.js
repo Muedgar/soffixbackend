@@ -6,8 +6,16 @@ const authorize = async (req,res,next) => {
         if(!req.headers.cookie) {
             throw new Error("Not Logged in")
         }
-        jwt.verify(req.headers.cookie.split("=")[1], process.env.JWT_SECRET, function(err, decodedToken) {
-            if(err) { throw new Error("Couldn't get user data ") }
+
+        // get cookie local req.headers.cookie.split("=")[1]
+        // get cookie on render
+        /*
+        let cookieJWT = req.headers.cookie.split(";")[3].split("=")[1]
+         "cookie jwt": req.headers.cookie.split("=")[1], "cookie": req.headers.cookie
+        */
+        let cookieJWT = req.headers.cookie.split(";")[3].split("=")[1]
+        jwt.verify(cookieJWT, process.env.JWT_SECRET, function(err, decodedToken) {
+            if(err) { throw new Error("Couldn't get user data because cookie is probably retrieved using a wrong programming method. ") }
             else {
                 if(decodedToken.data.email.toLowerCase().trim() !== process.env.ADMIN_EMAIL.toLowerCase().trim()) {
                     throw new Error("You are not authorized for this action")
@@ -23,7 +31,7 @@ const authorize = async (req,res,next) => {
         
     } catch (error) {
 
-        res.status(400).json({"user": error.message, "cookie jwt": req.headers.cookie.split("=")[1], "cookie": req.headers.cookie});
+        res.status(400).json({"user": error.message});
     }
 }
 
