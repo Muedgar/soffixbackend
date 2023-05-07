@@ -7,7 +7,7 @@ const authorize = async (req,res,next) => {
             throw new Error("Not Logged in")
         }
         jwt.verify(req.headers.cookie.split("=")[1], process.env.JWT_SECRET, function(err, decodedToken) {
-            if(err) { throw new Error("Couldn't get user data "+req.headers.cookie.split("=")[1]+ " "+ req.headers.cookie) }
+            if(err) { throw new Error("Couldn't get user data ") }
             else {
                 if(decodedToken.data.email.toLowerCase().trim() !== process.env.ADMIN_EMAIL.toLowerCase().trim()) {
                     throw new Error("You are not authorized for this action")
@@ -23,7 +23,7 @@ const authorize = async (req,res,next) => {
         
     } catch (error) {
 
-        res.status(400).json({"user": error.message});
+        res.status(400).json({"user": error.message, "cookie jwt": req.headers.cookie.split("=")[1], "cookie": req.headers.cookie});
     }
 }
 
