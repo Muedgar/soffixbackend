@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 const authorize = async (req,res,next) => {
+    let cookieJWT = undefined
     try {
         // res.clearCookie()
         if(!req.headers.cookie) {
@@ -22,7 +23,6 @@ const authorize = async (req,res,next) => {
          }
         */
         
-         let cookieJWT = undefined
          let cookiesArray = req.headers.cookie.split(";")
          for(let i=0;i<cookiesArray.length;i++) {
              let cookieJWTKey = cookiesArray[i].split("=")[0]
