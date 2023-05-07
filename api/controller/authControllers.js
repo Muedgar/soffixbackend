@@ -92,6 +92,7 @@ const login_post = async(req, res) => {
 
 
 const getLoggedInUser = async (req,res) => {
+    let cookieJWT = undefined
     try {
         // res.clearCookie()
         console.log(req.headers)
@@ -99,7 +100,6 @@ const getLoggedInUser = async (req,res) => {
             throw new Error("Not Logged in")
         }
         
-        let cookieJWT = undefined
          let cookiesArray = req.headers.cookie.split(";")
          for(let i=0;i<cookiesArray.length;i++) {
              let cookieJWTKey = cookiesArray[i].split("=")[0]
