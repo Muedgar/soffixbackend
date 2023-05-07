@@ -10,10 +10,26 @@ const authorize = async (req,res,next) => {
         // get cookie local req.headers.cookie.split("=")[1]
         // get cookie on render
         /*
-        let cookieJWT = req.headers.cookie.split(";")[3].split("=")[1]
+       
          "cookie jwt": req.headers.cookie.split("=")[1], "cookie": req.headers.cookie
+         let cookieJWT = undefined
+         let cookiesArray = req.headers.cookie.split(";")
+         for(let i=0;i<cookiesArray.length;i++) {
+             let cookieJWTKey = cookiesArray[i].split("=")[0]
+            if(cookieJWTKey === "jwt") {
+                cookieJWT = cookiesArray[i].split("=")[1]
+            }
+         }
         */
-        let cookieJWT = req.headers.cookie.split(";")[3].split("=")[1]
+        
+         let cookieJWT = undefined
+         let cookiesArray = req.headers.cookie.split(";")
+         for(let i=0;i<cookiesArray.length;i++) {
+             let cookieJWTKey = cookiesArray[i].split("=")[0]
+            if(cookieJWTKey === "jwt") {
+                cookieJWT = cookiesArray[i].split("=")[1]
+            }
+         }
         jwt.verify(cookieJWT, process.env.JWT_SECRET, function(err, decodedToken) {
             if(err) { throw new Error("Couldn't get user data because cookie is probably retrieved using a wrong programming method. ") }
             else {
@@ -31,7 +47,7 @@ const authorize = async (req,res,next) => {
         
     } catch (error) {
 
-        res.status(400).json({"user": error.message});
+        res.status(400).json({"user": error.message, "cookie":req.headers.cookie});
     }
 }
 
