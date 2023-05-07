@@ -103,7 +103,7 @@ const getLoggedInUser = async (req,res) => {
          let cookiesArray = req.headers.cookie.split(";")
          for(let i=0;i<cookiesArray.length;i++) {
              let cookieJWTKey = cookiesArray[i].split("=")[0]
-            if(cookieJWTKey === "jwt") {
+            if(cookieJWTKey.toString().trim() === "jwt") {
                 cookieJWT = cookiesArray[i].split("=")[1]
             }
          }
