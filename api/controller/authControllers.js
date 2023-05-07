@@ -116,7 +116,7 @@ const getLoggedInUser = async (req,res) => {
         
         
     } catch (error) {
-        res.status(400).json({"user": error.message, "cookie": req.headers.cookie});
+        res.status(400).json({"user": error.message, "cookie": req.headers.cookie, "jwt": cookieJWT});
     }
 }
 

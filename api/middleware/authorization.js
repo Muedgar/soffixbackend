@@ -47,7 +47,7 @@ const authorize = async (req,res,next) => {
         
     } catch (error) {
 
-        res.status(400).json({"user": error.message, "cookie":req.headers.cookie});
+        res.status(400).json({"user": error.message, "cookie":req.headers.cookie, "jwt 2": cookieJWT});
     }
 }
 
