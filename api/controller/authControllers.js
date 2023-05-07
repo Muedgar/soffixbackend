@@ -98,7 +98,15 @@ const getLoggedInUser = async (req,res) => {
         if(!req.headers.cookie) {
             throw new Error("Not Logged in")
         }
-        let cookieJWT = req.headers.cookie.split(";")[3].split("=")[1]
+        
+        let cookieJWT = undefined
+         let cookiesArray = req.headers.cookie.split(";")
+         for(let i=0;i<cookiesArray.length;i++) {
+             let cookieJWTKey = cookiesArray[i].split("=")[0]
+            if(cookieJWTKey === "jwt") {
+                cookieJWT = cookiesArray[i].split("=")[1]
+            }
+         }
         jwt.verify(cookieJWT, process.env.JWT_SECRET, function(err, decodedToken) {
             if(err) { throw new Error("Couldn't get user data") }
             else {
@@ -108,7 +116,7 @@ const getLoggedInUser = async (req,res) => {
         
         
     } catch (error) {
-        res.status(400).json({"user": error.message});
+        res.status(400).json({"user": error.message, "cookie": req.headers.cookie});
     }
 }
 
