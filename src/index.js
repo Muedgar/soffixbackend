@@ -21,7 +21,7 @@ const start  = async () => {
   await mongoose.connect(dbSecrets.MONGO_URI)
   .then(d => {
     app.listen(dbSecrets.PORT, () => {
-      console.log("db connected server up and running ...");
+      console.log("db connected server up and running ...",dbSecrets.PORT);
     })
   })
   .catch(e => console.log("error message: ", e.message));
