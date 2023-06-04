@@ -17,6 +17,7 @@ const clearItems = async (req, res) => {
 const getItems = async (req, res) => {
     await Order.find({})
         .then(d => {
+            console.log("trying to get orders...",d);
             /*
             <th style={{paddingLeft: '35px'}} name="product">Product Name</th>
                 <th name="price">Price</th>
@@ -26,6 +27,9 @@ const getItems = async (req, res) => {
             */
            let results = [];
            d.forEach(da => {
+            if(!da.orderInfo[0]) {
+                return
+            }
             da.orderInfo[0].forEach(daData => {
                 let result = [];
                 
@@ -40,10 +44,11 @@ const getItems = async (req, res) => {
                 result.push(da._id)
                 results.push(result)
             })
+            console.log("got results, ",results);
             
            })
             res.status(201).json(results)
-        }).catch(e => res.status(400).json({message: 'Bad Request'}))
+        }).catch(e => res.status(400).json({message: 'Bad Request, can not get data', error: e}))
 }
 
 
