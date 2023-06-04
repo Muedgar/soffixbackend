@@ -9,7 +9,7 @@ const router = require("../api/router/sofarouter");
 
 const app = express();
 
-app.use(cors({credentials: true, origin:  ['https://admin.sofalightbusiness.com','https://www.admin.sofalightbusiness.com','https://www.sofalightbusiness.com','https://sofalightbusiness.com','http:localhost:3000']}));
+app.use(cors({credentials: true, origin:  ['https://admin.sofalightbusiness.com','https://www.admin.sofalightbusiness.com','https://www.sofalightbusiness.com','https://sofalightbusiness.com']}));
 app.use(express.json());
 
 app.use("/sofalight/backend/api", router);
