@@ -11,6 +11,14 @@ const {
 } = require("../controller/sofaproducts");
 
 const {
+    getAllMattress,
+    addMattress,
+    clearMattressTable,
+    updateMattress,
+    deleteMattress
+} = require("../controller/mattressController");
+
+const {
 saveItems,
 getItems,
 deleteOneItem
@@ -24,6 +32,13 @@ router.post("/products/add",authorize,addProduct);
 router.delete("/products/clear",authorize,clearProductsTable);
 router.delete("/products/delete/:id",authorize,deleteProduct)
 router.put("/products/update/:id",authorize,updateProduct)
+
+// /mattress
+router.get("/mattress",getAllMattress);
+router.post("/mattress/add",authorize,addMattress);
+router.delete("/mattress/clear",authorize,clearMattressTable);
+router.delete("/mattress/delete/:id",authorize,deleteMattress)
+router.put("/mattress/update/:id",authorize,updateMattress)
 
 // orders 
 router.post("/products/order", saveItems);
