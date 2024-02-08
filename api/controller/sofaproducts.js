@@ -3,8 +3,15 @@ const cloudinary = require("../Utils/cloudinary");
 const fs = require("fs");
 
 const getAllProducts = async(req,res) => {
-    const products = await Product.find({}).exec();
-    res.status(200).json(products);
+    
+    try {
+        const products = await Product.find({}).exec();
+        res.status(200).json(products);
+    } catch (error) {
+        console.log(error);
+
+        res.status(404).json({message: "Unable to retrieve products, Please contact support"})
+    }
 }
 
 
@@ -21,7 +28,7 @@ const addProduct = async (req,res) => {
 
 const updateProduct = async (req,res) => {
     try {
-        const result = await Product.findOne({_id: req.params.id}).then(d => d).catch(e => new Error("can't find product"))
+        const result = await Product.findOne({_id: req.params.id}).then(d => d).catch(e => console.log("can't find product"))
         
         // delete all images in the cloud
         // cloudinary
@@ -32,7 +39,9 @@ const updateProduct = async (req,res) => {
                 await cloudinary.uploader.destroy(image[2]).then((d) => {
                     console.log(d)
                     countDeletedImages++
-                }).catch(e => new Error('image not deleted in the cloud'));
+                }).catch(e => {
+                    console.log(e)
+                });
             })
         }
         await deleteImagesInTheCloud();
@@ -50,7 +59,7 @@ const updateProduct = async (req,res) => {
 
 const deleteProduct = async (req,res) => {
     try {
-        const result = await Product.findOne({_id: req.params.id}).then(d => d).catch(e => new Error("can't find product"))
+        const result = await Product.findOne({_id: req.params.id}).then(d => d).catch(e => console.log("can't find product"))
         
         // delete all images in the cloud
         // cloudinary
@@ -61,7 +70,9 @@ const deleteProduct = async (req,res) => {
                 await cloudinary.uploader.destroy(image[2]).then((d) => {
                     console.log(d)
                     countDeletedImages++
-                }).catch(e => new Error('image not deleted in the cloud'));
+                }).catch(e => {
+                    console.log(e)
+                });
             })
         }
         await deleteImagesInTheCloud();
@@ -82,7 +93,7 @@ const clearProductsTable = async (req,res) => {
     try {
         await Product.deleteMany({}).then(d => {
             res.status(204).json({message: 'products table cleared'})
-        }).catch(e => new Error("can't clear table"))
+        }).catch(e => console.log("can't clear table"))
         } catch (error) {
         console.log(error);
 
