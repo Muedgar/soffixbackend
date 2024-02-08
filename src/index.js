@@ -9,7 +9,7 @@ const router = require("../api/router/sofarouter");
 
 const app = express();
 
-app.use(cors({credentials: true, origin:  ['https://admin.sofalightbusiness.com','https://www.admin.sofalightbusiness.com','https://www.sofalightbusiness.com','https://sofalightbusiness.com']}));
+app.use(cors());
 app.use(express.json());
 
 app.use("/sofalight/backend/api", router);
@@ -20,8 +20,8 @@ const start  = async () => {
   mongoose.set('strictQuery', false);
   await mongoose.connect(dbSecrets.MONGO_URI)
   .then(d => {
-    app.listen(dbSecrets.PORT, () => {
-      console.log("db connected server up and running ...",dbSecrets.PORT);
+    app.listen(dbSecrets.PORT, '0.0.0.0', () => {
+      console.log("db connected server up and running ...", dbSecrets.PORT);
     })
   })
   .catch(e => console.log("error message: ", e.message));
