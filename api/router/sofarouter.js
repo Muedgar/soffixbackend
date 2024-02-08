@@ -21,7 +21,6 @@ const { authorize } = require("../middleware/authorization");
 // products
 router.get("/products",getAllProducts);
 router.post("/products/add",authorize,addProduct);
-router.delete("/products/clear",authorize,clearProductsTable);
 router.delete("/products/delete/:id",authorize,deleteProduct)
 router.put("/products/update/:id",authorize,updateProduct)
 
