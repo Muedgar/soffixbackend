@@ -83,7 +83,7 @@ const login_post = async(req, res) => {
         const token = createToken({id: user._id, email: user.email});
         res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000});
         console.log("logged in");
-        res.status(200).json({user, status: 'user logged in'});
+        res.status(200).json({user, status: 'user logged in', token: token});
     } catch (error) {
         const errors = handleErrors(error);
         res.status(400).json({errors});
@@ -92,22 +92,10 @@ const login_post = async(req, res) => {
 
 
 const getLoggedInUser = async (req,res) => {
-    let cookieJWT = undefined
+    
     try {
-        // res.clearCookie()
-        console.log(req.headers)
-        if(!req.headers.cookie) {
-            throw new Error("Not Logged in")
-        }
         
-         let cookiesArray = req.headers.cookie.split(";")
-         for(let i=0;i<cookiesArray.length;i++) {
-             let cookieJWTKey = cookiesArray[i].split("=")[0]
-            if(cookieJWTKey.toString().trim() === "jwt") {
-                cookieJWT = cookiesArray[i].split("=")[1]
-            }
-         }
-        jwt.verify(cookieJWT, process.env.JWT_SECRET, function(err, decodedToken) {
+        jwt.verify(req.query.jwt, process.env.JWT_SECRET, function(err, decodedToken) {
             if(err) { throw new Error("Couldn't get user data") }
             else {
                 res.status(200).json(decodedToken)  // Add to req object
